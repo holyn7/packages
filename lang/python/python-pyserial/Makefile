@@ -8,43 +8,35 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=python-pyserial
-PKG_VERSION:=3.1.1
-PKG_RELEASE:=1
+PKG_VERSION:=3.4
+PKG_RELEASE:=2
+
+PYPI_NAME:=pyserial
+PKG_HASH:=6e2d401fdee0eab996cf734e67773a0143b932772ca8b42451440cfed942c627
+
+PKG_LICENSE:=BSD
 PKG_MAINTAINER:=Micke Prag <micke.prag@telldus.se>
-PKG_LICENSE:=Python-2.0
 
-PKG_SOURCE:=pyserial-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=http://pypi.python.org/packages/3c/d8/a9fa247ca60b02b3bebbd61766b4f321393b57b13c53b18f6f62cf172c08/
-PKG_HASH:=d657051249ce3cbd0446bcfb2be07a435e1029da4d63f53ed9b4cdde7373364c
-
-PKG_BUILD_DIR:=$(BUILD_DIR)/pyserial-$(PKG_VERSION)
-PKG_BUILD_DEPENDS:=python
-
+include ../pypi.mk
 include $(INCLUDE_DIR)/package.mk
-include ../python-package.mk
+include ../python3-package.mk
 
-define Package/python-pyserial
-  SUBMENU:=Python
-  SECTION:=lang
+define Package/python3-pyserial
+  SECTION:=lang-python
   CATEGORY:=Languages
-  TITLE:=python-pyserial
-  URL:=http://pyserial.sourceforge.net
-  DEPENDS:=+python-light
+  SUBMENU:=Python
+  TITLE:=python3-pyserial
+  URL:=https://github.com/pyserial/pyserial
+  DEPENDS:=+python3-light
 endef
 
-define Package/python-pyserial/description
-	serial port python bindings
+define Package/python3-pyserial/description
+This module encapsulates the access for the serial port. It provides backends
+for Python running on Windows, OSX, Linux, BSD (possibly any POSIX compliant
+system) and IronPython. The module named "serial" automatically selects the
+appropriate backend.
 endef
 
-define Build/Compile
-	$(call Build/Compile/PyMod,,install --prefix=/usr --root="$(PKG_INSTALL_DIR)")
-endef
-
-define Package/python-pyserial/install
-	$(INSTALL_DIR) $(1)$(PYTHON_PKG_DIR)
-	$(CP) \
-	    $(PKG_INSTALL_DIR)$(PYTHON_PKG_DIR)/* \
-	    $(1)$(PYTHON_PKG_DIR)
-endef
-
-$(eval $(call BuildPackage,python-pyserial))
+$(eval $(call Py3Package,python3-pyserial))
+$(eval $(call BuildPackage,python3-pyserial))
+$(eval $(call BuildPackage,python3-pyserial-src))
